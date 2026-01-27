@@ -1,0 +1,43 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Secrets - НИКОГДА не коммитить
+.env
+.env.local
+*.key
+*.pem
+credentials.json
+secrets/
+
+# Temporary
+*.tmp
+*.log
+*.bak
+
+# Build
+dist/
+build/
+*.egg-info/
