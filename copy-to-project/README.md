@@ -49,7 +49,7 @@ cp -r templates/ docs/ /path/to/your-project/
 
 ### Skills
 
-**Claude Code (10 skills):**
+**Claude Code (11 skills):**
 
 | Skill | Описание |
 |-------|----------|
@@ -62,9 +62,10 @@ cp -r templates/ docs/ /path/to/your-project/
 | `change-budget` | Ограничение масштаба: ≤8 файлов, одна ось изменений |
 | `doc-steward` | Интервью и документация проекта |
 | `project-architect-bootstrap` | Каркас для новых Python-проектов |
+| `refactoring-specialist` | Безопасный рефакторинг и применение паттернов |
 | `subagents` | Использование субагентов для параллельных задач (только Claude Code) |
 
-**Другие агенты (9 skills):** все кроме `subagents`
+**Другие агенты (10 skills):** все кроме `subagents`
 
 ### Hooks (только Claude Code)
 
@@ -99,7 +100,7 @@ docs/
 ```
 your-project/
 ├── .claude/                 # Claude Code
-│   ├── skills/              # 10 skills
+│   ├── skills/              # 11 skills
 │   ├── hooks/               # 5 hooks
 │   ├── state/               # Локальный state (hook_state.json)
 │   └── settings.local.json
