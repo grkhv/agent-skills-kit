@@ -4,8 +4,8 @@
 
 **Готовые skills и hooks для AI coding агентов**
 
-[![Skills](https://img.shields.io/badge/skills-11-blue?style=flat-square)](copy-to-project/.claude/skills/)
-[![Hooks](https://img.shields.io/badge/hooks-5-green?style=flat-square)](copy-to-project/.claude/hooks/)
+[![Skills](https://img.shields.io/badge/skills-14-blue?style=flat-square)](copy-to-project/.claude/skills/)
+[![Hooks](https://img.shields.io/badge/hooks-6-green?style=flat-square)](copy-to-project/.claude/hooks/)
 [![Агенты](https://img.shields.io/badge/агенты-4-orange?style=flat-square)](#-поддерживаемые-агенты)
 [![Стандарт](https://img.shields.io/badge/стандарт-agentskills.io-purple?style=flat-square)](https://agentskills.io)
 [![Лицензия](https://img.shields.io/badge/лицензия-MIT-lightgrey?style=flat-square)](LICENSE)
@@ -61,10 +61,10 @@ cp -r copy-to-project/templates/ copy-to-project/docs/ your-project/
 
 | Агент | Skills | Hooks | Что копировать |
 |:------|:------:|:-----:|:---------------|
-| **Claude Code** | ✅ 11 | ✅ 5 | `.claude/` + `CLAUDE.md` + `CODEMAP.md` |
-| **Codex** | ✅ 10 | ❌ | `.codex/` + `CODEMAP.md` |
-| **Windsurf** | ✅ 10 | ❌ | `.windsurf/` + `AGENTS.md` + `CODEMAP.md` |
-| **Antigravity** | ✅ 10 | ❌ | `.agent/` + `CODEMAP.md` |
+| **Claude Code** | ✅ 14 | ✅ 6 | `.claude/` + `CLAUDE.md` + `CODEMAP.md` |
+| **Codex** | ✅ 13 | ❌ | `.codex/` + `CODEMAP.md` |
+| **Windsurf** | ✅ 13 | ❌ | `.windsurf/` + `AGENTS.md` + `CODEMAP.md` |
+| **Antigravity** | ✅ 13 | ❌ | `.agent/` + `CODEMAP.md` |
 
 ---
 
@@ -91,8 +91,16 @@ cp -r copy-to-project/templates/ copy-to-project/docs/ your-project/
 
 | Skill | Описание |
 |:------|:---------|
-| [**python-style**](copy-to-project/.claude/skills/python-style/) | Google Python Style Guide |
+| [**python-style**](copy-to-project/.claude/skills/python-style/) | Google Python Style Guide + обязательный ruff |
+| [**ruff-enforcer**](copy-to-project/.claude/skills/ruff-enforcer/) | Принудительное форматирование через ruff |
 | [**project-architect-bootstrap**](copy-to-project/.claude/skills/project-architect-bootstrap/) | Каркас для новых Python-проектов |
+
+### Артефакты и тестирование
+
+| Skill | Описание |
+|:------|:---------|
+| [**auto-save-artifacts**](copy-to-project/.claude/skills/auto-save-artifacts/) | Обязательное сохранение планов и исследований в файлы |
+| [**test-runner**](copy-to-project/.claude/skills/test-runner/) | Обязательный запуск тестов после изменений кода |
 
 ### Документация и совместная работа
 
@@ -110,10 +118,11 @@ Hooks автоматически применяют правила — обой�
 | Hook | Событие | Что делает |
 |:-----|:--------|:-----------|
 | **require_plan.py** | `PreToolUse` | Блокирует Edit/Write без утверждённого плана |
-| **shell_guard.py** | `PreToolUse` | Блокирует опасные Bash команды (`rm -rf`, `sudo` и др.) |
+| **shell_guard.py** | `PreToolUse` | Блокирует опасные команды, отслеживает тесты |
 | **mark_dirty.py** | `PostToolUse` | Отслеживает изменённые файлы в state |
 | **auto_format.py** | `PostToolUse` | Авто-форматирует файлы (ruff, prettier, sqlfluff) |
 | **enforce_verify.py** | `Stop` | Требует верификацию перед остановкой |
+| **enforce_subagent_tests.py** | `Stop` | Предупреждает если тесты не запущены после изменений |
 
 ---
 
@@ -122,13 +131,13 @@ Hooks автоматически применяют правила — обой�
 ```
 your-project/
 ├── .claude/                    # Claude Code
-│   ├── skills/                 # 11 skills
-│   ├── hooks/                  # 5 hooks
+│   ├── skills/                 # 14 skills
+│   ├── hooks/                  # 6 hooks
 │   ├── state/                  # State хуков (hook_state.json)
 │   └── settings.local.json
-├── .codex/skills/              # Codex (10 skills)
-├── .windsurf/skills/           # Windsurf (10 skills)
-├── .agent/skills/              # Antigravity (10 skills)
+├── .codex/skills/              # Codex (13 skills)
+├── .windsurf/skills/           # Windsurf (13 skills)
+├── .agent/skills/              # Antigravity (13 skills)
 ├── docs/
 │   ├── notes/                  # Планы и lock-in summaries
 │   └── ADR/                    # Architecture Decision Records
