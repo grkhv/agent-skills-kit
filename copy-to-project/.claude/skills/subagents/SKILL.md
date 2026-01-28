@@ -5,6 +5,20 @@ description: Используй субагентов для параллельн
 
 Claude Code поддерживает субагентов через инструмент `Task`. Используй их для параллельных операций.
 
+## ОБЯЗАТЕЛЬНЫЕ сценарии
+
+После **ЛЮБЫХ** изменений кода ты **ОБЯЗАН** запустить проверку:
+
+```
+Task(subagent_type: "Bash", prompt: "ruff check . && pytest tests/ -v")
+```
+
+Или параллельно:
+```
+Task(subagent_type: "Bash", prompt: "ruff check src/")
+Task(subagent_type: "Bash", prompt: "pytest tests/ -v")
+```
+
 ## Доступные типы субагентов
 
 | subagent_type | Назначение | Инструменты |

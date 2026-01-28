@@ -5,6 +5,7 @@ require_plan.py — PreToolUse hook
 Требует наличия плана перед изменениями кода.
 Блокирует Edit/Write если нет PLAN.md или docs/notes/plan-*.md.
 """
+
 from __future__ import annotations
 
 import glob
@@ -93,17 +94,18 @@ def main() -> int:
     # Нет плана — блокируем
     _audit(f"BLOCK (no plan): {file_path or '(unknown)'}")
     print(
-        "BLOCKED: No plan found.\n\n"
-        "Create one of:\n"
-        "  - PLAN.md\n"
-        "  - docs/notes/plan-YYYYMMDD-<topic>.md\n\n"
-        "Plan should include:\n"
-        "  1. Goal (1-2 sentences)\n"
-        "  2. Boundaries (files to touch, files to avoid)\n"
-        "  3. Risks (2-5 points)\n"
-        "  4. Steps (6-12 steps)\n"
-        "  5. Verification command\n\n"
-        "Then retry the edit/write.",
+        "BLOCKED: No saved plan found.\n\n"
+        "ТЫ ОБЯЗАН сохранить план в ФАЙЛ:\n"
+        "  - docs/notes/plan-YYYYMMDD-<topic>.md (ПРЕДПОЧТИТЕЛЬНО)\n"
+        "  - PLAN.md (для быстрых задач)\n\n"
+        "План ОБЯЗАН содержать:\n"
+        "  1. Цель (1-2 предложения)\n"
+        "  2. Границы (файлы для изменения, файлы не трогать)\n"
+        "  3. Риски (2-5 пунктов)\n"
+        "  4. Шаги (6-12 шагов)\n"
+        "  5. Команда верификации\n\n"
+        "НЕ ДЕРЖИ ПЛАН ТОЛЬКО В ПАМЯТИ РАЗГОВОРА!\n"
+        "Сохрани план в файл, затем повтори операцию.",
         file=sys.stderr,
     )
     return 2

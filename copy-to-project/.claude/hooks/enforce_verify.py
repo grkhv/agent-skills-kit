@@ -5,6 +5,7 @@ enforce_verify.py — Stop hook
 Требует верификацию перед остановкой если были изменения.
 Проверяет что last_verify_utc >= last_edit_utc.
 """
+
 from __future__ import annotations
 
 import json
@@ -66,7 +67,9 @@ def main() -> int:
 
     if not verified_after_edit:
         touched = state.get("touched_files") or []
-        touched_preview = "\n".join(f"- {p}" for p in touched[-10:]) if touched else "(unknown files)"
+        touched_preview = (
+            "\n".join(f"- {p}" for p in touched[-10:]) if touched else "(unknown files)"
+        )
 
         _audit("BLOCK (dirty without verify)")
         print(
@@ -86,7 +89,9 @@ def main() -> int:
     # Верификация была — очищаем dirty
     state["dirty"] = False
     state["touched_files"] = []
-    STATE_PATH.write_text(json.dumps(state, ensure_ascii=False, indent=2), encoding="utf-8")
+    STATE_PATH.write_text(
+        json.dumps(state, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
     _audit("ALLOW (verified) and cleared dirty")
     return 0
 

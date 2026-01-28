@@ -1,11 +1,31 @@
 ---
 name: python-style
-description: Соблюдение Python стиля (Google style guide) и автоматическое форматирование.
+description: Соблюдение Python стиля (Google style guide) и ОБЯЗАТЕЛЬНОЕ использование ruff.
+hooks:
+  onComplete: |
+    ruff format . && ruff check .
+permissions:
+  - "Bash(ruff*)"
 ---
 
 # Python Style
 
 При написании Python кода следуй Google Python Style Guide.
+
+## ОБЯЗАТЕЛЬНЫЙ workflow
+
+После **КАЖДОГО** изменения Python файла:
+
+```bash
+# ШАГ 1: Форматирование
+ruff format <file>
+
+# ШАГ 2: Проверка и авто-исправление
+ruff check <file> --fix
+
+# ШАГ 3: Финальная проверка
+ruff check <file>
+```
 
 ## Инструменты
 
@@ -73,3 +93,9 @@ def process(items: List[str]) -> Dict[str, int]:
 
 - Максимальная длина строки: 88 символов (ruff default)
 - Всегда использовать type hints для public API
+
+## ЗАПРЕЩЕНО
+
+- Коммитить код без прохождения `ruff check`
+- Игнорировать ошибки ruff без явной причины
+- Использовать `# noqa` без комментария-обоснования

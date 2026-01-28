@@ -9,6 +9,40 @@
 > 4. Заполни все секции конкретными значениями
 > 5. Удали этот блок AGENT INSTRUCTION после заполнения
 
+## КРИТИЧЕСКИЕ ПРАВИЛА
+
+### 1. ОБЯЗАТЕЛЬНО сохраняй артефакты в файлы
+
+| Артефакт | Папка | Формат |
+|----------|-------|--------|
+| План | `docs/notes/` | `plan-YYYYMMDD-<topic>.md` |
+| Исследование | `docs/notes/` | `research-YYYYMMDD-<topic>.md` |
+| Lock-in | `docs/notes/` | `lock-in-YYYYMMDD-HHmm-<topic>.md` |
+
+**НЕ держи планы и результаты только в памяти разговора!**
+
+### 2. ОБЯЗАТЕЛЬНО используй ruff
+
+После КАЖДОГО изменения Python файла:
+```bash
+ruff format <file>
+ruff check <file> --fix
+```
+
+### 3. ОБЯЗАТЕЛЬНО запускай тесты
+
+После изменений кода:
+```bash
+pytest tests/ -v
+```
+
+Или используй субагента:
+```
+Task(subagent_type: "Bash", prompt: "ruff check . && pytest tests/")
+```
+
+---
+
 ## Quick Facts
 
 | | |
@@ -69,7 +103,10 @@ docs/          # Документация
 | После завершения задачи | `verify-and-lock-in` |
 | Оценка рисков | `qa-gatekeeper` |
 | Сложная задача | `task-decomposition` |
-| Python код | `python-style` |
+| Python код | `python-style`, `ruff-enforcer` |
+| Сохранение артефактов | `auto-save-artifacts` |
+| После изменений кода | `test-runner` |
+| Параллельные задачи | `subagents` |
 
 ## Common Commands
 

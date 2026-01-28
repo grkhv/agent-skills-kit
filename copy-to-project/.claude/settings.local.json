@@ -1,5 +1,17 @@
 {
   "$schema": "https://code.claude.com/schemas/settings.json",
+  "permissions": {
+    "wildcards": [
+      "Bash(ruff*)",
+      "Bash(pytest*)",
+      "Bash(python -m pytest*)",
+      "Bash(mypy*)",
+      "Bash(make check*)",
+      "Bash(make test*)"
+    ]
+  },
+  "skillHotReload": true,
+  "forkedContextEnabled": true,
   "hooks": {
     "PreToolUse": [
       {
@@ -47,6 +59,11 @@
           {
             "type": "command",
             "command": "python .claude/hooks/enforce_verify.py",
+            "timeout": 10
+          },
+          {
+            "type": "command",
+            "command": "python .claude/hooks/enforce_subagent_tests.py",
             "timeout": 10
           }
         ]

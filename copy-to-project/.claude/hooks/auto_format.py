@@ -5,6 +5,7 @@ auto_format.py — PostToolUse hook
 Автоматически форматирует файлы после изменений.
 Поддерживает: Python, JSON, Markdown, SQL, YAML, JS/TS.
 """
+
 from __future__ import annotations
 
 import json
@@ -43,7 +44,11 @@ FORMATTERS: dict[str, tuple[list[str], str, str]] = {
     ".yaml": (["prettier", "--write", "{file}"], "prettier", "npm install -g prettier"),
     ".yml": (["prettier", "--write", "{file}"], "prettier", "npm install -g prettier"),
     # SQL - sqlfluff
-    ".sql": (["sqlfluff", "fix", "--force", "{file}"], "sqlfluff", "pip install sqlfluff"),
+    ".sql": (
+        ["sqlfluff", "fix", "--force", "{file}"],
+        "sqlfluff",
+        "pip install sqlfluff",
+    ),
     # JavaScript/TypeScript - prettier
     ".js": (["prettier", "--write", "{file}"], "prettier", "npm install -g prettier"),
     ".ts": (["prettier", "--write", "{file}"], "prettier", "npm install -g prettier"),
@@ -213,9 +218,18 @@ def main() -> int:
         print(message)
     else:
         _audit(f"FAILED: {message}")
-        # Не выводим ошибку в stderr для отсутствующих инструментов
-        # чтобы не пугать пользователя
+        # Критическое предупреждение для Python без ruff
         if "not found" in message:
+            _, tool_name, _ = FORMATTERS.get(ext, ([], "", ""))
+            if ext == ".py" and tool_name == "ruff":
+                print(
+                    "\n" + "=" * 60 + "\n"
+                    "CRITICAL: ruff НЕ УСТАНОВЛЕН!\n"
+                    "Python файлы ОБЯЗАНЫ форматироваться через ruff.\n"
+                    "Установи: pip install ruff\n"
+                    "=" * 60 + "\n",
+                    file=sys.stderr,
+                )
             print(f"SKIP (tool unavailable): {file_path}")
         else:
             print(message, file=sys.stderr)

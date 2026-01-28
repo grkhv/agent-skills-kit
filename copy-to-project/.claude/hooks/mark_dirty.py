@@ -5,6 +5,7 @@ mark_dirty.py — PostToolUse hook
 Отмечает файлы как изменённые после Edit/Write.
 Состояние сохраняется в .claude/state/ проекта.
 """
+
 from __future__ import annotations
 
 import json
@@ -39,7 +40,9 @@ def _read_state() -> dict[str, Any]:
 def _write_state(state: dict[str, Any]) -> None:
     """Записывает состояние в файл."""
     STATE_PATH.parent.mkdir(parents=True, exist_ok=True)
-    STATE_PATH.write_text(json.dumps(state, ensure_ascii=False, indent=2), encoding="utf-8")
+    STATE_PATH.write_text(
+        json.dumps(state, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
 
 
 def _read_stdin_json() -> dict[str, Any]:

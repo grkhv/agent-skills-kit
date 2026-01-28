@@ -5,6 +5,7 @@ shell_guard.py — PreToolUse hook
 Блокирует опасные shell-команды и доступ к секретам.
 Также отмечает команды верификации для enforce_verify hook.
 """
+
 from __future__ import annotations
 
 import json
@@ -29,6 +30,17 @@ VERIFY_PATTERNS = [
     r"\bblack\b",
     r"\bmypy\b",
     r"\bpre-commit\s+run\b",
+]
+
+# Команды тестирования (для enforce_subagent_tests)
+TEST_PATTERNS = [
+    r"\bpytest\b",
+    r"\bpython\s+-m\s+pytest\b",
+    r"\bmake\s+test\b",
+    r"\bjust\s+test\b",
+    r"\bnpm\s+test\b",
+    r"\bgo\s+test\b",
+    r"\bcargo\s+test\b",
 ]
 
 # Опасные команды (полный запрет)
@@ -76,7 +88,9 @@ def _read_state() -> dict[str, Any]:
 def _write_state(state: dict[str, Any]) -> None:
     """Записывает состояние в файл."""
     STATE_PATH.parent.mkdir(parents=True, exist_ok=True)
-    STATE_PATH.write_text(json.dumps(state, ensure_ascii=False, indent=2), encoding="utf-8")
+    STATE_PATH.write_text(
+        json.dumps(state, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
 
 
 def _read_stdin_json() -> dict[str, Any]:
@@ -99,6 +113,14 @@ def _extract_command(payload: dict[str, Any]) -> str:
 def _looks_like_verify(cmd: str) -> bool:
     """Проверяет, является ли команда верификацией."""
     for pat in VERIFY_PATTERNS:
+        if re.search(pat, cmd):
+            return True
+    return False
+
+
+def _looks_like_test(cmd: str) -> bool:
+    """Проверяет, является ли команда запуском тестов."""
+    for pat in TEST_PATTERNS:
         if re.search(pat, cmd):
             return True
     return False
@@ -136,7 +158,10 @@ def main() -> int:
     danger_pat = _is_dangerous(cmd)
     if danger_pat:
         _audit(f"BLOCK dangerous={danger_pat} cmd={cmd!r}")
-        print(f"BLOCKED: Unsafe command pattern: {danger_pat}\nCommand: {cmd}", file=sys.stderr)
+        print(
+            f"BLOCKED: Unsafe command pattern: {danger_pat}\nCommand: {cmd}",
+            file=sys.stderr,
+        )
         return 2
 
     # Проверка на чувствительные пути
@@ -152,12 +177,16 @@ def main() -> int:
             )
             return 2
 
-    # Отмечаем верификацию
+    # Отмечаем верификацию и тесты
+    state = _read_state()
     if _looks_like_verify(cmd):
-        state = _read_state()
         state["last_verify_utc"] = datetime.utcnow().isoformat(timespec="seconds") + "Z"
-        _write_state(state)
         _audit(f"MARK verify cmd={cmd!r}")
+    if _looks_like_test(cmd):
+        state["last_test_utc"] = datetime.utcnow().isoformat(timespec="seconds") + "Z"
+        _audit(f"MARK test cmd={cmd!r}")
+    if _looks_like_verify(cmd) or _looks_like_test(cmd):
+        _write_state(state)
     else:
         _audit(f"ALLOW cmd={cmd!r}")
 
