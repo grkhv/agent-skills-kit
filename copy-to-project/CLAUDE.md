@@ -1,45 +1,15 @@
-# Project Instructions for Claude Code
+# CLAUDE.md
 
-> **AGENT INSTRUCTION**: Если этот файл содержит незаполненные плейсхолдеры
-> (текст в `<!-- -->` комментариях), **заполни их автоматически** на основе
-> анализа проекта:
-> 1. Просканируй структуру директорий
-> 2. Найди package.json, pyproject.toml, requirements.txt, Makefile
-> 3. Определи стек, команды тестирования/линтинга
-> 4. Заполни все секции конкретными значениями
-> 5. Удали этот блок AGENT INSTRUCTION после заполнения
+> **AGENT**: Если видишь `<!-- ЗАПОЛНИ -->` — заполни автоматически на основе анализа проекта (pyproject.toml, Makefile, структура директорий). Удали этот блок после заполнения.
 
-## КРИТИЧЕСКИЕ ПРАВИЛА
+## Обязательные правила
 
-### 1. ОБЯЗАТЕЛЬНО сохраняй артефакты в файлы
+1. **Артефакты в файлы** — планы, исследования, lock-in сохраняй в `docs/notes/`
+2. **Python: ruff** — после каждого изменения: `ruff format <file> && ruff check <file> --fix`
+3. **Тесты** — после изменений кода: `pytest tests/ -v` или `make check`
+4. **Definition of Done** — план соответствует diff, тесты есть, верификация пройдена
 
-| Артефакт | Папка | Формат |
-|----------|-------|--------|
-| План | `docs/notes/` | `plan-YYYYMMDD-<topic>.md` |
-| Исследование | `docs/notes/` | `research-YYYYMMDD-<topic>.md` |
-| Lock-in | `docs/notes/` | `lock-in-YYYYMMDD-HHmm-<topic>.md` |
-
-**НЕ держи планы и результаты только в памяти разговора!**
-
-### 2. ОБЯЗАТЕЛЬНО используй ruff
-
-После КАЖДОГО изменения Python файла:
-```bash
-ruff format <file>
-ruff check <file> --fix
-```
-
-### 3. ОБЯЗАТЕЛЬНО запускай тесты
-
-После изменений кода:
-```bash
-pytest tests/ -v
-```
-
-Или используй субагента:
-```
-Task(subagent_type: "Bash", prompt: "ruff check . && pytest tests/")
-```
+Детали: см. [.claude/rules/](.claude/rules/)
 
 ---
 
@@ -47,90 +17,61 @@ Task(subagent_type: "Bash", prompt: "ruff check . && pytest tests/")
 
 | | |
 |-|-|
-| **Stack** | <!-- ЗАПОЛНИ: язык, фреймворк, база данных --> |
-| **Test** | <!-- ЗАПОЛНИ: pytest / npm test / go test --> |
-| **Lint** | <!-- ЗАПОЛНИ: ruff check . / eslint / golangci-lint --> |
-| **Format** | <!-- ЗАПОЛНИ: ruff format . / prettier / gofmt --> |
-| **Build** | <!-- ЗАПОЛНИ: make build / npm run build / go build --> |
+| **Stack** | <!-- ЗАПОЛНИ --> |
+| **Test** | <!-- ЗАПОЛНИ: pytest / npm test --> |
+| **Lint** | <!-- ЗАПОЛНИ: ruff check . / eslint --> |
+| **Build** | <!-- ЗАПОЛНИ: make build / npm run build --> |
 
-## Key Directories
-
-<!-- ЗАПОЛНИ: просканируй проект и опиши реальную структуру -->
+## Структура
 
 ```
+<!-- ЗАПОЛНИ: просканируй проект -->
 src/           # Основной код
 tests/         # Тесты
 docs/          # Документация
 ```
 
-## Code Style
+## Стиль кода
 
-<!-- ЗАПОЛНИ: определи по существующему коду или конфигам (.editorconfig, pyproject.toml, etc.) -->
-
-- Язык: <!-- Python / TypeScript / Go / ... -->
-- Стиль: <!-- Google Style / Airbnb / Standard -->
+<!-- ЗАПОЛНИ: определи по конфигам -->
+- Язык: <!-- Python / TypeScript / Go -->
+- Стиль: <!-- Google Style / Airbnb -->
 - Именование: <!-- snake_case / camelCase -->
 
-## Git Conventions
+## Git
 
-- **Branches**: `{type}/{description}` (например: `feat/add-auth`)
-- **Commits**: [Conventional Commits](https://www.conventionalcommits.org/)
-  - `feat:` — новая функциональность
-  - `fix:` — исправление бага
-  - `docs:` — документация
-  - `refactor:` — рефакторинг без изменения поведения
-  - `test:` — добавление/исправление тестов
+- Branches: `{type}/{description}` (feat/add-auth)
+- Commits: [Conventional Commits](https://www.conventionalcommits.org/) — feat, fix, docs, refactor, test
 
-## Critical Rules
-
-### Error Handling
-
-- Никогда не глушить ошибки без логирования
-- Всегда давать пользователю понятный feedback
-- Логировать с достаточным контекстом для отладки
-
-### Testing
-
-- Писать тесты для нового функционала
-- Один assert per test (или логически связанная группа)
-- Использовать фабрики/фикстуры для тестовых данных
-
-## Skill Activation
-
-| Контекст | Skill |
-|----------|-------|
-| Перед изменениями кода | `plan-first` |
-| После завершения задачи | `verify-and-lock-in` |
-| Оценка рисков | `qa-gatekeeper` |
-| Сложная задача | `task-decomposition` |
-| Python код | `python-style`, `ruff-enforcer` |
-| Сохранение артефактов | `auto-save-artifacts` |
-| После изменений кода | `test-runner` |
-| Параллельные задачи | `subagents` |
-
-## Common Commands
-
-<!-- ЗАПОЛНИ: найди реальные команды в Makefile, package.json, или документации -->
+## Команды
 
 ```bash
-# Development
-<!-- ЗАПОЛНИ -->
-
-# Testing
-<!-- ЗАПОЛНИ -->
-
-# Build
-<!-- ЗАПОЛНИ -->
+# <!-- ЗАПОЛНИ из Makefile / package.json -->
+make check     # lint + test
+make test      # только тесты
 ```
 
-## Project-Specific Notes
+## Специфика проекта
 
-<!-- ЗАПОЛНИ: добавь важную информацию о проекте -->
-
-- Архитектура: <!-- опиши -->
-- Важные зависимости: <!-- перечисли -->
-- Известные ограничения: <!-- если есть -->
+<!-- ЗАПОЛНИ: архитектура, важные зависимости, ограничения -->
 
 ---
 
-*Этот файл читается Claude Code автоматически. После заполнения удали плейсхолдеры и блок AGENT INSTRUCTION.*
+## Skills
+
+| Skill | Когда |
+|-------|-------|
+| `artifacts` | Сохранение планов и результатов |
+| `python-style` | Python код |
+| `verify-and-lock-in` | После завершения задачи |
+| `qa-gatekeeper` | Оценка рисков |
+| `test-runner` | Запуск тестов |
+| `safe-shell` | Shell-команды |
+| `subagents` | Параллельные задачи |
+| `change-budget` | Ограничение масштаба |
+| `task-decomposition` | Сложные задачи (3+ файлов) |
+| `refactoring-specialist` | Крупный рефакторинг |
+| `doc-steward` | Проектная документация |
+| `project-architect-bootstrap` | Новые проекты |
+
+*Детали: [.claude/skills/](.claude/skills/)*

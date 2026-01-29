@@ -1,10 +1,10 @@
-# Agent Guidelines
+# AGENTS.md
 
-This file provides instructions for AI coding agents (Windsurf, Codex, Antigravity, etc.).
+Instructions for AI coding agents (Codex, Windsurf, Antigravity).
 
-## КРИТИЧЕСКИЕ ПРАВИЛА
+## Обязательные правила
 
-### 1. ОБЯЗАТЕЛЬНО сохраняй артефакты в файлы
+### 1. Артефакты в файлы
 
 | Артефакт | Папка | Формат |
 |----------|-------|--------|
@@ -14,93 +14,66 @@ This file provides instructions for AI coding agents (Windsurf, Codex, Antigravi
 
 **НЕ держи планы и результаты только в памяти разговора!**
 
-### 2. ОБЯЗАТЕЛЬНО используй ruff
+### 2. Python: ruff
 
-После КАЖДОГО изменения Python файла:
-```bash
-ruff format <file>
-ruff check <file> --fix
-```
+После каждого изменения: `ruff format <file> && ruff check <file> --fix`
 
-### 3. ОБЯЗАТЕЛЬНО запускай тесты
+### 3. Тесты
 
-После изменений кода:
-```bash
-pytest tests/ -v
-```
+После изменений кода: `pytest tests/ -v` или `make check`
+
+### 4. Definition of Done
+
+1. План (если требовался) существует и соответствует diff
+2. Тесты есть для нового поведения
+3. Верификация пройдена (`ruff` + `pytest`)
+4. Lock-in summary создан
+
+---
 
 ## Planning
 
-Before any non-trivial code changes, create a plan:
-
-1. **When to plan**: Code changes affecting >2 files, logic/behavior changes
-2. **Create**: `docs/notes/plan-YYYYMMDD-<topic>.md` (preferred) or `PLAN.md`
-3. **Include**: Goal, Boundaries, Risks (2-5), Steps (6-12), Verification command
-
-**ВАЖНО**: План ОБЯЗАН быть сохранён в файл, не только в чате.
+Перед нетривиальными изменениями (>2 файлов, логика) создай `docs/notes/plan-YYYYMMDD-<topic>.md`:
+- Цель, Границы, Риски (2-5), Шаги (6-12), Верификация
 
 ## Verification
 
-After code changes, always verify:
-
-```bash
-# Preferred
-make check
-
-# Or standard tools
-ruff format . && ruff check . && pytest tests/ -v && mypy src/
-```
-
-Provide a lock-in summary in `docs/notes/lock-in-YYYYMMDD-HHmm-<topic>.md`:
-- What changed (3-8 points)
-- How verified (commands + results)
-- Tests added/modified
-- Remaining risks
+После правок создай `docs/notes/lock-in-YYYYMMDD-HHmm-<topic>.md`:
+- Что изменилось (3-8 пунктов)
+- Как проверено (команды + результат)
+- Остаточные риски
 
 ## Safety
 
-**Never execute**:
-- `rm -rf /`, `format`, `mkfs`, `shutdown`, `sudo`
-- Reading secrets, `.env`, SSH keys without confirmation
-
-**Always**:
-- Use read-only commands first (`ls`, `git status`, `grep`)
-- Keep commands short and reversible
-- Ask confirmation for sensitive operations
+**Никогда**: `rm -rf /`, `sudo`, чтение `.env` / SSH keys без подтверждения
+**Всегда**: сначала read-only, короткие обратимые операции
 
 ## Code Style (Python)
 
-Follow Google Python Style Guide:
-- `snake_case` for functions/variables
-- `PascalCase` for classes
-- Type hints for public API
-- Format with `ruff format`
+- `snake_case` — функции/переменные, `PascalCase` — классы
+- Type hints для public API
+- Формат: `ruff format`
 
 ## Quality Gates
 
-For code changes, assess risk level:
-- **Low**: cosmetic, local changes
-- **Medium**: logic in one module
-- **High**: critical paths, payments, security
+- **Low**: косметика, локальные изменения
+- **Medium**: логика в одном модуле
+- **High**: критические пути, платежи, безопасность
 
-Match testing depth to risk.
+## Skills
 
-## Skills Reference
+Директории: `.agent/skills/`, `.codex/skills/`, `.windsurf/skills/`
 
-Каждый агент имеет skills в своей директории:
-- `.claude/skills/` — Claude Code (+ hooks, subagents)
-- `.agent/skills/` — Google Antigravity
-- `.codex/skills/` — OpenAI Codex
-- `.windsurf/skills/` — Windsurf
-
-Доступные skills:
 | Skill | Описание |
 |-------|----------|
-| `plan-first` | Планирование перед изменениями |
+| `artifacts` | Сохранение планов и результатов |
 | `python-style` | Стиль кода и ruff |
-| `auto-save-artifacts` | Сохранение артефактов |
-| `ruff-enforcer` | Форматирование Python |
-| `test-runner` | Запуск тестов |
 | `verify-and-lock-in` | Фиксация результатов |
 | `qa-gatekeeper` | Контроль качества |
+| `test-runner` | Запуск тестов |
 | `safe-shell` | Безопасные shell-команды |
+| `change-budget` | Ограничение масштаба изменений |
+| `task-decomposition` | Декомпозиция сложных задач |
+| `refactoring-specialist` | Безопасный рефакторинг |
+| `doc-steward` | Создание проектной документации |
+| `project-architect-bootstrap` | Каркас для новых проектов |
