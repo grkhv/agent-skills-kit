@@ -4,8 +4,7 @@
 
 **Готовые skills и hooks для AI coding агентов**
 
-[![Skills](https://img.shields.io/badge/skills-12-blue?style=flat-square)](copy-to-project/.claude/skills/)
-[![Hooks](https://img.shields.io/badge/hooks-6-green?style=flat-square)](copy-to-project/.claude/hooks/)
+[![Skills](https://img.shields.io/badge/skills-13-blue?style=flat-square)](copy-to-project/.claude/skills/)
 [![Rules](https://img.shields.io/badge/rules-2-teal?style=flat-square)](copy-to-project/.claude/rules/)
 [![Агенты](https://img.shields.io/badge/агенты-4-orange?style=flat-square)](#-поддерживаемые-агенты)
 [![Стандарт](https://img.shields.io/badge/стандарт-agentskills.io-purple?style=flat-square)](https://agentskills.io)
@@ -32,12 +31,12 @@
 
 ## 🤖 Поддерживаемые агенты
 
-| Агент | Skills | Rules | Hooks | Что копировать |
-|:------|:------:|:-----:|:-----:|:---------------|
-| **Claude Code** | ✅ 12 | ✅ 2 | ✅ 6 | `.claude/` + `CLAUDE.md` + `CODEMAP.md` |
-| **Codex** | ✅ 11 | ❌ | ❌ | `.codex/` + `AGENTS.md` + `CODEMAP.md` |
-| **Windsurf** | ✅ 11 | ❌ | ❌ | `.windsurf/` + `AGENTS.md` + `CODEMAP.md` |
-| **Antigravity** | ✅ 11 | ❌ | ❌ | `.agent/` + `CODEMAP.md` |
+| Агент | Skills | Rules | Что копировать |
+|:------|:------:|:-----:|:---------------|
+| **Claude Code** | ✅ 13 | ✅ 2 | `.claude/` + `CLAUDE.md` + `CODEMAP.md` |
+| **Codex** | ✅ 12 | ❌ | `.codex/` + `AGENTS.md` + `CODEMAP.md` |
+| **Windsurf** | ✅ 12 | ❌ | `.windsurf/` + `AGENTS.md` + `CODEMAP.md` |
+| **Antigravity** | ✅ 12 | ❌ | `.agent/` + `CODEMAP.md` |
 
 ---
 
@@ -59,6 +58,7 @@
 | [**safe-shell**](copy-to-project/.claude/skills/safe-shell/) | Блокировка опасных shell-команд |
 | [**change-budget**](copy-to-project/.claude/skills/change-budget/) | Ограничение масштаба: ≤8 файлов, одна ось изменений |
 | [**refactoring-specialist**](copy-to-project/.claude/skills/refactoring-specialist/) | Безопасный рефакторинг и применение паттернов |
+| [**bug-hunter**](copy-to-project/.claude/skills/bug-hunter/) | Поиск и исправление багов из GitHub Issues репозитория |
 
 ### Стиль кода и тестирование
 
@@ -88,34 +88,17 @@ Rules загружаются автоматически и всегда в ко�
 
 ---
 
-## 🪝 Hooks (только Claude Code)
-
-Hooks автоматически применяют правила — обойти их невозможно.
-
-| Hook | Событие | Что делает |
-|:-----|:--------|:-----------|
-| **require_plan.py** | `PreToolUse` | Блокирует Edit/Write без утверждённого плана |
-| **shell_guard.py** | `PreToolUse` | Блокирует опасные команды, отслеживает тесты |
-| **mark_dirty.py** | `PostToolUse` | Отслеживает изменённые файлы в state |
-| **auto_format.py** | `PostToolUse` | Авто-форматирует файлы (ruff, prettier, sqlfluff) |
-| **enforce_verify.py** | `Stop` | Требует верификацию перед остановкой |
-| **enforce_subagent_tests.py** | `Stop` | Предупреждает если тесты не запущены после изменений |
-
----
-
 ## 📁 Структура проекта
 
 ```
 your-project/
 ├── .claude/                    # Claude Code
-│   ├── skills/                 # 12 skills
+│   ├── skills/                 # 13 skills
 │   ├── rules/                  # 2 rules (auto-load)
-│   ├── hooks/                  # 6 hooks
-│   ├── state/                  # State хуков
 │   └── settings.local.json
-├── .codex/skills/              # Codex (11 skills)
-├── .windsurf/skills/           # Windsurf (11 skills)
-├── .agent/skills/              # Antigravity (11 skills)
+├── .codex/skills/              # Codex (12 skills)
+├── .windsurf/skills/           # Windsurf (12 skills)
+├── .agent/skills/              # Antigravity (12 skills)
 ├── docs/
 │   ├── notes/                  # Планы и lock-in summaries
 │   └── ADR/                    # Architecture Decision Records
@@ -131,10 +114,8 @@ your-project/
 
 | Фича | Описание |
 |:-----|:---------|
-| **State в проекте** | Хуки хранят состояние в `.claude/state/`, не в домашней директории |
 | **Lock-in в файл** | Результаты работы сохраняются в `docs/notes/lock-in-*.md` |
 | **Переключение между IDE** | Контекст сохраняется при смене агента |
-| **Авто-форматирование** | Python (ruff), JSON, MD/YAML/JS/TS (prettier), SQL (sqlfluff) |
 | **Шаблоны** | Готовые `PLAN.md`, `TODO.md`, `CHANGELOG.md` |
 
 ---

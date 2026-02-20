@@ -77,3 +77,4 @@ Instructions for AI coding agents (Codex, Windsurf, Antigravity).
 | `refactoring-specialist` | Безопасный рефакторинг |
 | `doc-steward` | Создание проектной документации |
 | `project-architect-bootstrap` | Каркас для новых проектов |
+| `bug-hunter` | Поиск и исправление багов из GitHub Issues |

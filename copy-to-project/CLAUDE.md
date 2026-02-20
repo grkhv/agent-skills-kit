@@ -73,5 +73,6 @@ make test      # только тесты
 | `refactoring-specialist` | Крупный рефакторинг |
 | `doc-steward` | Проектная документация |
 | `project-architect-bootstrap` | Новые проекты |
+| `bug-hunter` | Поиск и исправление багов из GitHub Issues |
 
 *Детали: [.claude/skills/](.claude/skills/)*

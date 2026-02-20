@@ -1,5 +1,5 @@
 {
-  "$schema": "https://code.claude.com/schemas/settings.json",
+  "plansDirectory": "./docs/plans",
   "permissions": {
     "wildcards": [
       "Bash(ruff*)",
@@ -8,66 +8,12 @@
       "Bash(mypy*)",
       "Bash(make check*)",
       "Bash(make test*)"
-    ]
+    ],
+    "defaultMode": "acceptEdits"
+  },
+  "env": {
+    "ENABLE_TOOL_SEARCH": "auto:5"
   },
   "skillHotReload": true,
-  "forkedContextEnabled": true,
-  "hooks": {
-    "PreToolUse": [
-      {
-        "matcher": "Edit|Write",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python .claude/hooks/require_plan.py",
-            "timeout": 10
-          }
-        ]
-      },
-      {
-        "matcher": "Bash",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python .claude/hooks/shell_guard.py",
-            "timeout": 10
-          }
-        ]
-      }
-    ],
-    "PostToolUse": [
-      {
-        "matcher": "Edit|Write",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python .claude/hooks/mark_dirty.py",
-            "timeout": 10
-          },
-          {
-            "type": "command",
-            "command": "python .claude/hooks/auto_format.py",
-            "timeout": 30
-          }
-        ]
-      }
-    ],
-    "Stop": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python .claude/hooks/enforce_verify.py",
-            "timeout": 10
-          },
-          {
-            "type": "command",
-            "command": "python .claude/hooks/enforce_subagent_tests.py",
-            "timeout": 10
-          }
-        ]
-      }
-    ]
-  }
+  "forkedContextEnabled": true
 }
