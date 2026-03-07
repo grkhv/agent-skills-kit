@@ -4,77 +4,23 @@ Instructions for AI coding agents (Codex, Windsurf, Antigravity).
 
 ## Обязательные правила
 
-### 1. Артефакты в файлы
+IMPORTANT: Эти правила нельзя пропускать.
 
-| Артефакт | Папка | Формат |
-|----------|-------|--------|
-| План | `docs/notes/` | `plan-YYYYMMDD-<topic>.md` |
-| Исследование | `docs/notes/` | `research-YYYYMMDD-<topic>.md` |
-| Lock-in | `docs/notes/` | `lock-in-YYYYMMDD-HHmm-<topic>.md` |
+1. **Артефакты — в файлы** — планы, исследования, lock-in ОБЯЗАТЕЛЬНО сохраняй в `docs/notes/`.
+2. **Линтер** — после каждого изменения кода запусти линтер. Определи команду из конфигов проекта (pyproject.toml, package.json, Makefile).
+3. **Тесты** — после изменений кода запусти тесты. Без прохождения тестов задача считается незавершённой.
+4. **Definition of Done** — план соответствует diff, тесты существуют и проходят, верификация пройдена.
 
-**НЕ держи планы и результаты только в памяти разговора!**
+## Git
 
-### 2. Python: ruff
-
-После каждого изменения: `ruff format <file> && ruff check <file> --fix`
-
-### 3. Тесты
-
-После изменений кода: `pytest tests/ -v` или `make check`
-
-### 4. Definition of Done
-
-1. План (если требовался) существует и соответствует diff
-2. Тесты есть для нового поведения
-3. Верификация пройдена (`ruff` + `pytest`)
-4. Lock-in summary создан
-
----
-
-## Planning
-
-Перед нетривиальными изменениями (>2 файлов, логика) создай `docs/notes/plan-YYYYMMDD-<topic>.md`:
-- Цель, Границы, Риски (2-5), Шаги (6-12), Верификация
-
-## Verification
-
-После правок создай `docs/notes/lock-in-YYYYMMDD-HHmm-<topic>.md`:
-- Что изменилось (3-8 пунктов)
-- Как проверено (команды + результат)
-- Остаточные риски
+- Ветки: `{type}/{description}` (feat/add-auth, fix/login-bug)
+- Коммиты: Conventional Commits — feat, fix, docs, refactor, test
 
 ## Safety
 
-**Никогда**: `rm -rf /`, `sudo`, чтение `.env` / SSH keys без подтверждения
-**Всегда**: сначала read-only, короткие обратимые операции
+- Сначала read-only операции, потом короткие обратимые изменения
+- Чтение `.env` / SSH keys — только с подтверждением пользователя
 
-## Code Style (Python)
+## Контекст проекта
 
-- `snake_case` — функции/переменные, `PascalCase` — классы
-- Type hints для public API
-- Формат: `ruff format`
-
-## Quality Gates
-
-- **Low**: косметика, локальные изменения
-- **Medium**: логика в одном модуле
-- **High**: критические пути, платежи, безопасность
-
-## Skills
-
-Директории: `.agent/skills/`, `.codex/skills/`, `.windsurf/skills/`
-
-| Skill | Описание |
-|-------|----------|
-| `artifacts` | Сохранение планов и результатов |
-| `python-style` | Стиль кода и ruff |
-| `verify-and-lock-in` | Фиксация результатов |
-| `qa-gatekeeper` | Контроль качества |
-| `test-runner` | Запуск тестов |
-| `safe-shell` | Безопасные shell-команды |
-| `change-budget` | Ограничение масштаба изменений |
-| `task-decomposition` | Декомпозиция сложных задач |
-| `refactoring-specialist` | Безопасный рефакторинг |
-| `doc-steward` | Создание проектной документации |
-| `project-architect-bootstrap` | Каркас для новых проектов |
-| `bug-hunter` | Поиск и исправление багов из GitHub Issues |
+См. README.md
